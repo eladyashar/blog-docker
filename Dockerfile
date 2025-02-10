@@ -1,20 +1,20 @@
-# Use the official Node.js image as the base
-FROM node:14
+# Use a Node.js base image
+FROM node:alpine
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to install dependencies
-COPY package*.json ./
+# Copy the package.json and package-lock.json files
+COPY package.json package-lock.json ./
 
-# Install dependencies
+# Install the dependencies
 RUN npm install
 
-# Copy the rest of the application code to the container
+# Copy the rest of the project files
 COPY . .
 
-# Expose port 3000 for the Node.js server
+# Expose the port the server will run on
 EXPOSE 3000
 
-# Start the Node.js server
-CMD ["npm", "start"]
+# Start the server
+CMD ["node", "server.js"]
