@@ -1,13 +1,16 @@
-# Use the official Nginx image
+# Use the official Nginx image as a base
 FROM nginx:alpine
 
-# Copy your HTML and CSS files to the Nginx web root
-#In a Dockerfile, the COPY instruction is used to copy files and directories from your local machine (host) into the Docker image.
-COPY index.html /usr/share/nginx/html/
-COPY styles.css /usr/share/nginx/html/
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Set the working directory
+WORKDIR /usr/share/nginx/html
 
-# Expose port 80 for web traffic
+# Remove default Nginx static files
+RUN rm -rf ./*
+
+# Copy website files to the Nginx default serving directory
+COPY public /usr/share/nginx/html
+
+# Expose port 80
 EXPOSE 80
 
 # Start Nginx
