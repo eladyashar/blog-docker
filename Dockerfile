@@ -1,15 +1,20 @@
-# Use the official Nginx image
-FROM nginx:alpine
+# Use the official Node.js image as the base
+FROM node:14
 
-# Copy your HTML and CSS files to the Nginx web root
-#In a Dockerfile, the COPY instruction is used to copy files and directories from your local machine (host) into the Docker image.
-COPY ./images /usr/share/nginx/html/
-COPY index.html /usr/share/nginx/html/
-COPY styles.css /usr/share/nginx/html/
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Set the working directory inside the container
+WORKDIR /app
 
-# Expose port 80 for web traffic
-EXPOSE 80
+# Copy package.json and package-lock.json to install dependencies
+COPY package*.json ./
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code to the container
+COPY . .
+
+# Expose port 3000 for the Node.js server
+EXPOSE 3000
+
+# Start the Node.js server
+CMD ["npm", "start"]
